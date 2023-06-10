@@ -13,7 +13,7 @@ import com.bumptech.glide.request.RequestOptions
 import ru.makarovda.deliveryfoodmda.R
 import ru.makarovda.deliveryfoodmda.domain.Dish
 
-class DishesAdapter(val context: Context, var dishes: List<Dish>):
+class DishesAdapter(val context: Context, var dishes: List<Dish>, val itemClickListener: (Dish) -> Unit):
     RecyclerView.Adapter<DishesAdapter.DishViewHolder>(){
 
     class DishViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
@@ -48,6 +48,9 @@ class DishesAdapter(val context: Context, var dishes: List<Dish>):
             .placeholder(R.drawable.ic_launcher_background)
             .apply(requestOptions)
             .into(holder.image)
+        holder.itemView.setOnClickListener {
+            itemClickListener(dishes[position])
+        }
     }
 
 

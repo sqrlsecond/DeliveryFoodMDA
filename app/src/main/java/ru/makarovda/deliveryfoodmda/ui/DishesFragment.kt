@@ -9,6 +9,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import ru.makarovda.deliveryfoodmda.R
@@ -22,7 +24,18 @@ class DishesFragment: Fragment(R.layout.fragment_dishes) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = DishesAdapter(requireContext(), ArrayList<Dish>())
+        val adapter = DishesAdapter(requireContext(), ArrayList<Dish>()) {
+            val dishDialog = DishDialogFragment()
+            val dishBundle = Bundle().apply {
+                putString(DishDialogFragment.DISH_NAME, it.name)
+                putString(DishDialogFragment.DISH_DESC, it.description)
+                putString(DishDialogFragment.DISH_IMG_URL, it.imageUrl)
+                putInt(DishDialogFragment.DISH_WEIGHT, it.weight)
+                putInt(DishDialogFragment.DISH_PRICE, it.price)
+            }
+            dishDialog.arguments = dishBundle
+            dishDialog.show(childFragmentManager, null)
+        }
 
         val recView = view.findViewById<RecyclerView>(R.id.dishes_recView)
         recView.adapter = adapter
