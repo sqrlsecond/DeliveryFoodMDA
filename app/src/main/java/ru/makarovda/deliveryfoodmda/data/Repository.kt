@@ -1,5 +1,6 @@
 package ru.makarovda.deliveryfoodmda.data
 
+
 import android.util.Log
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +17,7 @@ class Repository @Inject constructor(private val foodService: IFoodService): IRe
         val response = foodService.getFoodCategories()
         if (response.isSuccessful) {
             response.body()?.let{
-                Log.d("FoodCategories", it.categories.toString())
+                //Log.d("FoodCategories", it.categories.toString())
                 emit(RequestState.FoodCategoriesSuccess(it.categories))
                 return@flow
             }
@@ -25,7 +26,17 @@ class Repository @Inject constructor(private val foodService: IFoodService): IRe
         emit(RequestState.Error(message))
     }
 
-    override suspend fun getDishes(): Flow<RequestState> {
-        TODO("Not yet implemented")
+    override suspend fun getDishes(): Flow<RequestState> = flow {
+        val response = foodService.getAllDishes()
+
+        if (response.isSuccessful) {
+            response.body()?.let{
+                //Log.d("FoodCategories", it.categories.toString())
+                emit(RequestState.DishesSuccess(it.dishes))
+                return@flow
+            }
+        }
+        val message = response.errorBody()?.toString() ?: "dishes request fail"
+        emit(RequestState.Error(message))
     }
 }

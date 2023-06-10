@@ -11,5 +11,5 @@ interface IFoodService {
     suspend fun getFoodCategories(): Response<FoodCategoriesRemote>
 
     @GET("./c7a508f2-a904-498a-8539-09d96785446e")
-    suspend fun getAllDishes(): Response<List<Dish>>
+    suspend fun getAllDishes(): Response<DishesRemote>
 }
